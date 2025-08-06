@@ -3,5 +3,5 @@
 	url = https://github.com/aldegad/nuxt-core
 
 [submodule "svg-mapper"]
-  path = svg-mapper
-  url = https://github.com/aldegad/nuxt-svg-mapper
+	path = svg-mapper
+	url = https://github.com/aldegad/nuxt-svg-mapper
