@@ -1,0 +1,21 @@
+{
+  "name": "@aldegad/nuxt-electron-app",
+  "version": "1.0.0",
+  "main": "main.js",
+  "description": "Aldegad Nuxt Desktop App",
+  "author": "Bynd <bynd@bynd.com>",
+  "scripts": {
+    "dev": "electron .",
+    "build": "electron-builder --config electron-builder.config.js",
+    "build:win": "electron-builder --win"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "get-port": "5",
+    "safer-buffer": "^2.1.2"
+  },
+  "devDependencies": {
+    "electron": "37.2.3",
+    "electron-builder": "26.0.12"
+  }
+}

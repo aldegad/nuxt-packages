@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@import "./pretendardvariable.css";
+@import "./transition.css";
+@import "overlayscrollbars/overlayscrollbars.css";
+
+@theme {
+  --font-display: "Pretendard Variable";
+}
+
+@layer base {
+  html {
+    @apply font-(family-name:--font-display);
+    @apply tracking-[-0.015em];
+  }
+  input:focus,
+  input:focus-visible,
+  button:focus,
+  button:focus-visible {
+    @apply outline-none;
+  }
+}
+
+.no-user-select {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}

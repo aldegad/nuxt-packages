@@ -1,4 +1,33 @@
 {
   "name": "vue-packages",
-  "packageManager": "yarn@4.9.2"
+  "packageManager": "yarn@4.9.2",
+  "private": true,
+  "workspaces": [
+    "core",
+    "electron-app",
+    "svg-mapper"
+  ],
+  "scripts": {
+    "graph": "npx nx graph",
+    "eslint:core": "yarn workspace @aldegad/nuxt-core eslint",
+    "tsc:core": "yarn workspace @aldegad/nuxt-core tsc",
+    "prettier:core": "yarn workspace @aldegad/nuxt-core prettier",
+    "dev:core": "yarn workspace @aldegad/nuxt-core dev",
+    "generate:core": "yarn workspace @aldegad/nuxt-core generate",
+    "preview:core": "yarn workspace @aldegad/nuxt-core preview",
+    "build:lib:core": "yarn workspace @aldegad/nuxt-core build:lib",
+    "electron:core": "cross-env ELECTRON_TARGET=core yarn workspace @aldegad/nuxt-electron-app dev",
+    "electron-build:core": "cross-env ELECTRON_TARGET=core yarn workspace @aldegad/nuxt-electron-app build",
+    "eslint:svg-mapper": "yarn workspace @aldegad/nuxt-svg-mapper eslint",
+    "tsc:svg-mapper": "yarn workspace @aldegad/nuxt-svg-mapper tsc",
+    "prettier:svg-mapper": "yarn workspace @aldegad/nuxt-svg-mapper prettier",
+    "dev:svg-mapper": "yarn workspace @aldegad/nuxt-svg-mapper dev",
+    "generate:svg-mapper": "yarn workspace @aldegad/nuxt-svg-mapper generate",
+    "electron:svg-mapper": "cross-env ELECTRON_TARGET=svg-mapper yarn workspace @aldegad/nuxt-electron-app dev",
+    "electron-build:svg-mapper": "cross-env ELECTRON_TARGET=svg-mapper yarn workspace @aldegad/nuxt-electron-app build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "cross-env": "^7.0.3"
+  }
 }
