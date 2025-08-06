@@ -5,7 +5,8 @@
   "workspaces": [
     "core",
     "electron-app",
-    "svg-mapper"
+    "svg-mapper",
+    "forest-princess"
   ],
   "scripts": {
     "graph": "npx nx graph",
@@ -24,7 +25,8 @@
     "dev:svg-mapper": "yarn workspace @aldegad/nuxt-svg-mapper dev",
     "generate:svg-mapper": "yarn workspace @aldegad/nuxt-svg-mapper generate",
     "electron:svg-mapper": "cross-env ELECTRON_TARGET=svg-mapper yarn workspace @aldegad/nuxt-electron-app dev",
-    "electron-build:svg-mapper": "cross-env ELECTRON_TARGET=svg-mapper yarn workspace @aldegad/nuxt-electron-app build"
+    "electron-build:svg-mapper": "cross-env ELECTRON_TARGET=svg-mapper yarn workspace @aldegad/nuxt-electron-app build",
+    "dev:forest-princess": "yarn workspace @aldegad/nuxt-forest-princess dev"
   },
   "devDependencies": {
     "concurrently": "^9.2.0",
