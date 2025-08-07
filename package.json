@@ -6,7 +6,8 @@
     "core",
     "electron-app",
     "svg-mapper",
-    "forest-princess"
+    "forest-princess",
+    "nuxt-workers-transformersjs"
   ],
   "scripts": {
     "graph": "npx nx graph",
@@ -16,7 +17,9 @@
     "dev:core": "yarn workspace @aldegad/nuxt-core dev",
     "generate:core": "yarn workspace @aldegad/nuxt-core generate",
     "preview:core": "yarn workspace @aldegad/nuxt-core preview",
-    "build:lib:core": "yarn workspace @aldegad/nuxt-core build:lib",
+    "watch:core": "yarn workspace @aldegad/nuxt-core watch:lib",
+    "lib:core": "yarn workspace @aldegad/nuxt-core build:lib",
+    "publish:core": "yarn workspace @aldegad/nuxt-core publish",
     "electron:core": "cross-env ELECTRON_TARGET=core yarn workspace @aldegad/nuxt-electron-app dev",
     "electron-build:core": "cross-env ELECTRON_TARGET=core yarn workspace @aldegad/nuxt-electron-app build",
     "eslint:svg-mapper": "yarn workspace @aldegad/nuxt-svg-mapper eslint",

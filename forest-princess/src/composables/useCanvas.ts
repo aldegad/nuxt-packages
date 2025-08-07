@@ -1,23 +1,21 @@
+import { type AnimatedFrameCallbackProps, animatedFrame } from "@aldegad/nuxt-core";
+
 type WatchUpdateCallbackProps = {
   ctx: CanvasRenderingContext2D;
+  totalTime: number;
   deltaTime: number;
 };
 
 export const useCanvas = ({ canvas }: { canvas: Ref<HTMLCanvasElement | null> }) => {
   const ctx = ref<CanvasRenderingContext2D | null>(null);
+  let $animatedFrame: ReturnType<typeof animatedFrame> | null = null;
   let watchUpdateCallback: ((props: WatchUpdateCallbackProps) => void) | null = null;
-  let lastTimestamp = 0;
 
-  const draw = (timestamp: number = 0) => {
+  const draw = ({ totalTime, deltaTime }: AnimatedFrameCallbackProps) => {
     if (!ctx.value) return;
     ctx.value.clearRect(0, 0, canvas.value!.width, canvas.value!.height);
 
-    const deltaTime = lastTimestamp ? timestamp - lastTimestamp : 0;
-    lastTimestamp = timestamp;
-
-    watchUpdateCallback?.({ ctx: ctx.value, deltaTime });
-
-    requestAnimationFrame(draw);
+    watchUpdateCallback?.({ ctx: ctx.value, totalTime, deltaTime });
   };
 
   const watchUpdate = (callback: (props: WatchUpdateCallbackProps) => void) => {
@@ -27,16 +25,17 @@ export const useCanvas = ({ canvas }: { canvas: Ref<HTMLCanvasElement | null> })
   watch(canvas, (newCanvas) => {
     if (newCanvas) {
       ctx.value = newCanvas.getContext("2d");
+      ctx.value!.imageSmoothingEnabled = true;
+      ctx.value!.imageSmoothingQuality = "high";
     }
   });
 
   onMounted(() => {
-    lastTimestamp = 0;
-    requestAnimationFrame(draw);
+    $animatedFrame = animatedFrame(draw);
   });
 
   onBeforeUnmount(() => {
-    ctx.value = null;
+    $animatedFrame?.destroy();
   });
 
   return { ctx, watchUpdate };

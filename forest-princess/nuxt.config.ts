@@ -1,4 +1,4 @@
-import { resolve } from "url";
+import { fileURLToPath, resolve } from "url";
 import tailwindcss from "@tailwindcss/vite";
 
 export default defineNuxtConfig({
@@ -7,6 +7,9 @@ export default defineNuxtConfig({
   srcDir: "src/",
   css: ["~/assets/css/main.css"],
   modules: ["@nuxt/eslint", "@nuxt/test-utils/module", "@pinia/nuxt"],
+  alias: {
+    "@aldegad/nuxt-forest-princess": fileURLToPath(new URL("./src", import.meta.url)),
+  },
   components: [],
   imports: {
     scan: false,
@@ -19,7 +22,9 @@ export default defineNuxtConfig({
     static: true,
   },
   vite: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     plugins: [tailwindcss() as any],
+    assetsInclude: ["**/*.wasm"],
     server: {
       fs: {
         allow: [resolve(__dirname, "../../")],

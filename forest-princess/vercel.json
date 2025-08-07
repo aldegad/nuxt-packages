@@ -1,0 +1,5 @@
+{
+  "installCommand": "rm -rf .nuxt .output && yarn",
+  "buildCommand": "yarn generate",
+  "outputDirectory": ".output/public"
+}
