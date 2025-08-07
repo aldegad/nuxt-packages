@@ -1,6 +1,7 @@
 import type { Player } from "@aldegad/nuxt-forest-princess/schemas";
+import { type PlayerMovementProps, playerMovement } from "@aldegad/nuxt-forest-princess/utils";
 
-export const usePlayer = defineStore("player", () => {
+export const usePlayer = () => {
   const player = ref<Player>({
     src: null,
     x: 0,
@@ -11,10 +12,9 @@ export const usePlayer = defineStore("player", () => {
     movingTime: 0,
   });
 
-  const move = (dx: number, dy: number) => {
-    player.value.x += dx;
-    player.value.y += dy;
+  const move = (props: PlayerMovementProps) => {
+    playerMovement(props);
   };
 
   return { player, move };
-});
+};

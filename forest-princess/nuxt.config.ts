@@ -24,7 +24,6 @@ export default defineNuxtConfig({
   vite: {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     plugins: [tailwindcss() as any],
-    assetsInclude: ["**/*.wasm"],
     server: {
       fs: {
         allow: [resolve(__dirname, "../../")],

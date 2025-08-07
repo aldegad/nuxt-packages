@@ -9,9 +9,9 @@ export type PlayerMovementProps = {
 };
 
 export const playerMovement = ({ ctx, player, command, deltaTime }: PlayerMovementProps) => {
+  ctx.save();
   let dx = 0;
   let dy = 0;
-  ctx.save();
   if (command.state.includes(Command.MOVE_UP)) {
     dy -= 1;
   }
