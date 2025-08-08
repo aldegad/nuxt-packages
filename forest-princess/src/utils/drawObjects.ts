@@ -1,16 +1,16 @@
 import type { DrawObject } from "@aldegad/nuxt-forest-princess/schemas";
 
 export type WorldObject = {
-  instance: DrawObject;
+  state: DrawObject;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  render: (props: { ctx: CanvasRenderingContext2D; instance: any }) => void;
+  render: (props: { ctx: CanvasRenderingContext2D; state: any }) => void;
 };
 
 export const drawObjects = (ctx: CanvasRenderingContext2D, objects: WorldObject[]) => {
   const drawables = [
     ...objects.map((o) => ({
-      yBottom: o.instance.y + o.instance.height,
-      draw: () => o.instance.src && o.render({ ctx, instance: o.instance }),
+      yBottom: o.state.y + o.state.height,
+      draw: () => o.render({ ctx, state: o.state }),
     })),
   ];
 

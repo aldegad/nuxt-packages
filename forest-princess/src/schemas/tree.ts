@@ -1,6 +1,8 @@
 import type { DrawObject } from "./drawObject";
 
-export type Tree = DrawObject;
+export type Tree = DrawObject & {
+  id: string;
+};
 
 export type AddTreeProps = {
   x: number;
@@ -11,5 +13,5 @@ export type AddTreeProps = {
 
 export type RenderTreeProps = {
   ctx: CanvasRenderingContext2D;
-  instance: Tree;
+  state: Tree;
 };

@@ -1,4 +1,4 @@
-import { Command, type PlayerMovementProps, type RenderPlayerProps } from "@aldegad/nuxt-forest-princess/schemas";
+import { Command, type PlayerMovementProps } from "@aldegad/nuxt-forest-princess/schemas";
 
 export const updatePlayerMovement = ({ player, command, deltaTime }: PlayerMovementProps) => {
   let dx = 0;

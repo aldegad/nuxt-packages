@@ -16,5 +16,5 @@ export type PlayerMovementProps = {
 
 export type RenderPlayerProps = {
   ctx: CanvasRenderingContext2D;
-  instance: Player;
+  state: Player;
 };
