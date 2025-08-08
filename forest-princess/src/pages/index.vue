@@ -1,29 +1,43 @@
 <script setup lang="ts">
-import { playerFront } from "@aldegad/nuxt-forest-princess/assets/image";
-import { useCanvas, usePlayer } from "@aldegad/nuxt-forest-princess/composables";
+import { useCamera, useCanvas, usePlayer, useTrees } from "@aldegad/nuxt-forest-princess/composables";
 import { commandMap } from "@aldegad/nuxt-forest-princess/schemas";
-import { resizeImage } from "@aldegad/nuxt-forest-princess/utils";
+import { drawObjects } from "@aldegad/nuxt-forest-princess/utils";
 import { useCommand } from "@aldegad/nuxt-core";
 
 const canvas = ref<HTMLCanvasElement | null>(null);
 
-const { player, move: playerMove } = usePlayer();
-
-const playerImage = new Image();
-playerImage.src = playerFront;
-
-playerImage.onload = () => {
-  player.value.src = resizeImage(playerImage, 128, 128);
-};
+const player = usePlayer();
+const trees = useTrees();
+const camera = useCamera();
 
 const { watchUpdate } = useCanvas({ canvas });
 const { command } = useCommand({ map: commandMap });
 
 watchUpdate(({ ctx, deltaTime }) => {
-  playerMove({ ctx, player, command, deltaTime });
+  camera.setViewport(ctx.canvas.width, ctx.canvas.height);
+  camera.setFollowTarget(player.instance);
+  camera.update({ deltaTime });
+  ctx.save();
+  // 좀 더 이쁜 초록색으로 변경 (파스텔톤)
+  ctx.fillStyle = "#7ed957";
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  ctx.restore();
+  // 업데이트 분리
+  player.update({ command, deltaTime });
+
+  camera.begin(ctx);
+  drawObjects(ctx, [...trees.instance.map((t) => ({ instance: t, render: trees.render })), player]);
+  camera.end(ctx);
 });
 
-onMounted(() => {});
+onMounted(() => {
+  // 데모: 여러 그루의 나무 배치
+  trees.set([
+    { x: 100, y: 320 },
+    { x: 280, y: 260 },
+    { x: 420, y: 360 },
+  ]);
+});
 </script>
 
 <template>
