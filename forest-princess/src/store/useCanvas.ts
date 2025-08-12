@@ -1,12 +1,8 @@
+import type { WatchUpdateCallbackProps } from "@aldegad/nuxt-forest-princess/schemas";
 import { type AnimatedFrameCallbackProps, animatedFrame, useResizeObserver } from "@aldegad/nuxt-core";
 
-type WatchUpdateCallbackProps = {
-  ctx: CanvasRenderingContext2D;
-  totalTime: number;
-  deltaTime: number;
-};
-
-export const useCanvas = ({ canvasRef }: { canvasRef: Ref<HTMLCanvasElement | null> }) => {
+export const useCanvas = defineStore("canvas", () => {
+  const canvasRef = ref<HTMLCanvasElement | null>(null);
   const ctx = ref<CanvasRenderingContext2D | null>(null);
   let $animatedFrame: ReturnType<typeof animatedFrame> | null = null;
   let watchUpdateCallback: ((props: WatchUpdateCallbackProps) => void) | null = null;
@@ -16,7 +12,6 @@ export const useCanvas = ({ canvasRef }: { canvasRef: Ref<HTMLCanvasElement | nu
   const draw = ({ totalTime, deltaTime }: AnimatedFrameCallbackProps) => {
     if (!ctx.value) return;
     ctx.value.clearRect(0, 0, canvasRef.value!.width, canvasRef.value!.height);
-
     watchUpdateCallback?.({ ctx: ctx.value, totalTime, deltaTime });
   };
 
@@ -24,13 +19,17 @@ export const useCanvas = ({ canvasRef }: { canvasRef: Ref<HTMLCanvasElement | nu
     watchUpdateCallback = callback;
   };
 
-  watch(canvasRef, (newCanvas) => {
+  watch(canvasRef, (newCanvas, _, onCleanup) => {
     if (newCanvas) {
       newCanvas.width = newCanvas.clientWidth;
       newCanvas.height = newCanvas.clientHeight;
       ctx.value = newCanvas.getContext("2d");
       ctx.value!.imageSmoothingEnabled = true;
       ctx.value!.imageSmoothingQuality = "high";
+      $animatedFrame = animatedFrame(draw);
+      onCleanup(() => {
+        $animatedFrame?.destroy();
+      });
     }
   });
 
@@ -41,13 +40,7 @@ export const useCanvas = ({ canvasRef }: { canvasRef: Ref<HTMLCanvasElement | nu
     }
   });
 
-  onMounted(() => {
-    $animatedFrame = animatedFrame(draw);
-  });
+  return { ref: canvasRef, ctx, watchUpdate };
+});
 
-  onBeforeUnmount(() => {
-    $animatedFrame?.destroy();
-  });
-
-  return { ctx, watchUpdate };
-};
+export type CanvasInstance = ReturnType<typeof useCanvas>;

@@ -3,7 +3,7 @@ import { type AddLootProps, type Loot, ObjectType, type RenderLootProps } from "
 import { resizeImage } from "@aldegad/nuxt-forest-princess/utils";
 import { safeRandomUUID } from "@aldegad/nuxt-core";
 
-export const useLoots = () => {
+export const useLoots = defineStore("loots", () => {
   const baseWidth = 48;
   const baseHeight = 48;
 
@@ -15,17 +15,24 @@ export const useLoots = () => {
     lootImage.src = logIdle;
     lootImage.onload = () => {
       sprite.value = resizeImage(lootImage, baseWidth, baseHeight);
-      Object.values(state).forEach((l) => (l.src = sprite.value));
+      console.log(state.size);
+      state.forEach((l, key) => {
+        state.set(key, { ...l, src: sprite.value });
+      });
     };
   };
 
   const add = ({ x, y, width = baseWidth, height = baseHeight }: AddLootProps) => {
-    state.set(safeRandomUUID(), { type: ObjectType.LOOT, src: sprite.value, x, y, width, height });
+    const id = safeRandomUUID();
+    state.set(id, { id, type: ObjectType.LOOT, srcUrl: logIdle, src: sprite.value, x, y, width, height });
   };
 
   const set = (list: Array<AddLootProps>) => {
+    console.log(sprite.value);
     const newLoots: Loot[] = list.map(({ x, y, width = baseWidth, height = baseHeight }) => ({
+      id: safeRandomUUID(),
       type: ObjectType.LOOT,
+      srcUrl: logIdle,
       src: sprite.value,
       x,
       y,
@@ -33,7 +40,7 @@ export const useLoots = () => {
       height,
     }));
     state.clear();
-    newLoots.forEach((l) => state.set(safeRandomUUID(), l));
+    newLoots.forEach((l) => state.set(l.id, l));
   };
 
   const clear = () => {
@@ -45,9 +52,10 @@ export const useLoots = () => {
   };
 
   const render = ({ ctx, state }: RenderLootProps) => {
-    if (!sprite.value) return;
     ctx.save();
-    ctx.drawImage(sprite.value, state.x, state.y, state.width, state.height);
+    if (state.src) {
+      ctx.drawImage(state.src, state.x, state.y, state.width, state.height);
+    }
     ctx.restore();
   };
 
@@ -58,6 +66,6 @@ export const useLoots = () => {
   init();
 
   return { state, add, set, clear, removeById, render };
-};
+});
 
 export type LootInstance = ReturnType<typeof useLoots>;

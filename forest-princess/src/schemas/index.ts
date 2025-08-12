@@ -1,3 +1,4 @@
+export * from "./canvas";
 export * from "./command";
 export * from "./drawObject";
 export * from "./loot";

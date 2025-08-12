@@ -1,11 +1,13 @@
 import { playerFront } from "@aldegad/nuxt-forest-princess/assets/image";
 import type { Loot, Player, RenderPlayerProps } from "@aldegad/nuxt-forest-princess/schemas";
+import type { LootInstance } from "@aldegad/nuxt-forest-princess/store";
 import { resizeImage, updatePlayerMovement } from "@aldegad/nuxt-forest-princess/utils";
-import type { CommandState } from "@aldegad/nuxt-core";
-import type { LootInstance } from "./useLoots";
+import { type CommandState, safeRandomUUID } from "@aldegad/nuxt-core";
 
 export const usePlayer = () => {
   const state = reactive<Player>({
+    id: safeRandomUUID(),
+    srcUrl: playerFront,
     src: null,
     x: 0,
     y: 0,
@@ -20,7 +22,6 @@ export const usePlayer = () => {
   const loadSprite = () => {
     const playerImage = new Image();
     playerImage.src = playerFront;
-
     playerImage.onload = () => {
       state.src = resizeImage(playerImage, state.width, state.height);
     };
@@ -30,22 +31,23 @@ export const usePlayer = () => {
     updatePlayerMovement({ player: state, ...props });
   };
 
-  const checkLootOverlap = (loots: LootInstance): void => {
-    const pickupLoots: string[] = [];
-    loots.state.forEach((loot, id) => {
-      const isOverlapped =
-        state.x < loot.x + loot.width &&
-        state.x + state.width > loot.x &&
-        state.y < loot.y + loot.height &&
-        state.y + state.height > loot.y;
-      if (isOverlapped) pickupLoots.push(id);
-    });
-    // pickupLoots.forEach((loot) => pickupLoot(loot));
-  };
+  // 겹치는 영역이 전체 루트 영역의 절반을 넘으면 루팅되게 변경
+  const checkLootOverlap = (loots: LootInstance): Loot[] => {
+    const pickupLoots: Loot[] = [];
+    loots.state.forEach((loot) => {
+      // 교집합 영역 계산
+      const overlapX = Math.max(0, Math.min(state.x + state.width, loot.x + loot.width) - Math.max(state.x, loot.x));
+      const overlapY = Math.max(0, Math.min(state.y + state.height, loot.y + loot.height) - Math.max(state.y, loot.y));
+      const overlapArea = overlapX * overlapY;
+      const lootArea = loot.width * loot.height;
 
-  /* const pickupLoot = (loot: Loot) => {
-    console.log("pickupLoot", loot);
-  }; */
+      // 겹치는 영역이 루트 전체의 절반을 넘으면 루팅
+      if (overlapArea > lootArea / 2) {
+        pickupLoots.push(loot);
+      }
+    });
+    return pickupLoots;
+  };
 
   const render = ({ ctx, state }: RenderPlayerProps) => {
     ctx.save();

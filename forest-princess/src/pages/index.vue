@@ -1,23 +1,21 @@
 <script setup lang="ts">
-import { useCamera, useCanvas, useLoots, usePlayer, useTrees } from "@aldegad/nuxt-forest-princess/composables";
+import { useCamera, usePlayer, useTrees } from "@aldegad/nuxt-forest-princess/composables";
 import { commandMap } from "@aldegad/nuxt-forest-princess/schemas";
+import { useCanvas, useInventory, useLoots } from "@aldegad/nuxt-forest-princess/store";
 import { drawObjects } from "@aldegad/nuxt-forest-princess/utils";
 import { useCommand } from "@aldegad/nuxt-core";
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
-
-const { watchUpdate } = useCanvas({ canvasRef });
+const canvas = useCanvas();
 const { command } = useCommand({ map: commandMap });
 
 const camera = useCamera();
 const player = usePlayer();
 const trees = useTrees();
+const inventory = useInventory();
 const loots = useLoots();
 
-// 인벤토리 5칸과 슬롯 DOM 요소 참조
-const inventory = ref<(string | null)[]>([null, null, null, null, null]);
-
-watchUpdate(({ ctx, deltaTime }) => {
+canvas.watchUpdate(({ ctx, deltaTime }) => {
   ctx.save();
 
   // 카메라
@@ -32,7 +30,8 @@ watchUpdate(({ ctx, deltaTime }) => {
 
   // 데이터 업데이트
   player.update({ command, deltaTime });
-  player.checkLootOverlap(loots);
+  const pickedupLoots = player.checkLootOverlap(loots);
+  inventory.pickup(pickedupLoots);
 
   // 렌더
   camera.begin(ctx);
@@ -43,6 +42,17 @@ watchUpdate(({ ctx, deltaTime }) => {
   ]);
   camera.end(ctx);
 });
+
+watch(
+  canvasRef,
+  (newCanvas) => {
+    if (newCanvas) {
+      console.log("newCanvas", newCanvas);
+      canvas.ref = newCanvas;
+    }
+  },
+  { immediate: true },
+);
 
 onMounted(() => {
   // 데모: 여러 그루의 나무 배치
@@ -59,6 +69,11 @@ onMounted(() => {
     { x: 520, y: 420 },
     { x: 640, y: 280 },
     { x: 760, y: 360 },
+    { x: 200, y: 500 },
+    { x: 450, y: 180 },
+    { x: 680, y: 480 },
+    { x: 320, y: 120 },
+    { x: 580, y: 240 },
   ]);
 });
 </script>
@@ -69,9 +84,11 @@ onMounted(() => {
 
     <!-- 인벤토리 UI (DOM) -->
     <div class="absolute bottom-20 left-1/2 flex -translate-x-1/2 gap-2 rounded-md bg-white/70 p-2 shadow">
-      <template v-for="(id, i) in inventory" :key="i">
+      <template v-for="slotNum in inventory.state.slots" :key="slotNum">
         <div class="relative h-10 w-10 rounded border border-slate-300 bg-white">
-          <div v-if="id" class="absolute inset-1 rounded bg-slate-400/80"></div>
+          <div v-if="inventory.state.items[slotNum - 1]" class="absolute inset-1 rounded bg-slate-400/80">
+            <img :src="inventory.state.items[slotNum - 1]!.srcUrl" class="h-full w-full object-contain" />
+          </div>
         </div>
       </template>
     </div>
