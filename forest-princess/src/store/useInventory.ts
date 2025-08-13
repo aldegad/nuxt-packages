@@ -1,19 +1,21 @@
 import type { Loot } from "@aldegad/nuxt-forest-princess/schemas";
-import { useCanvas } from "./useCanvas";
 import { useLoots } from "./useLoots";
 
 export const useInventory = defineStore("inventory", () => {
-  const canvas = useCanvas();
   const lootInstance = useLoots();
+
   const state = reactive({
+    ref: null as HTMLDivElement | null,
+    slotRefs: [] as HTMLDivElement[],
     items: [] as Loot[],
-    slots: 5,
+    slotLength: 5,
+    itemsQueue: [] as Loot[],
   });
 
   const pickup = (loots: Loot[]) => {
     for (let i = 0; i < loots.length; i++) {
-      if (state.items.length < state.slots) {
-        state.items.push(loots[i]!);
+      if (state.items.length + state.itemsQueue.length < state.slotLength) {
+        state.itemsQueue.push(loots[i]!);
         lootInstance.removeById(loots[i]!.id);
       } else {
         break;

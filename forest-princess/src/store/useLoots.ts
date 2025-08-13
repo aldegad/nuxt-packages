@@ -4,8 +4,8 @@ import { resizeImage } from "@aldegad/nuxt-forest-princess/utils";
 import { safeRandomUUID } from "@aldegad/nuxt-core";
 
 export const useLoots = defineStore("loots", () => {
-  const baseWidth = 48;
-  const baseHeight = 48;
+  const baseWidth = 64;
+  const baseHeight = 64;
 
   const sprite = ref<CanvasImageSource | null>(null);
   const state = reactive(new Map<string, Loot>());
@@ -24,7 +24,7 @@ export const useLoots = defineStore("loots", () => {
 
   const add = ({ x, y, width = baseWidth, height = baseHeight }: AddLootProps) => {
     const id = safeRandomUUID();
-    state.set(id, { id, type: ObjectType.LOOT, srcUrl: logIdle, src: sprite.value, x, y, width, height });
+    state.set(id, { id, type: ObjectType.LOOT, src: sprite.value, x, y, width, height });
   };
 
   const set = (list: Array<AddLootProps>) => {
@@ -32,7 +32,6 @@ export const useLoots = defineStore("loots", () => {
     const newLoots: Loot[] = list.map(({ x, y, width = baseWidth, height = baseHeight }) => ({
       id: safeRandomUUID(),
       type: ObjectType.LOOT,
-      srcUrl: logIdle,
       src: sprite.value,
       x,
       y,
@@ -52,11 +51,9 @@ export const useLoots = defineStore("loots", () => {
   };
 
   const render = ({ ctx, state }: RenderLootProps) => {
-    ctx.save();
     if (state.src) {
       ctx.drawImage(state.src, state.x, state.y, state.width, state.height);
     }
-    ctx.restore();
   };
 
   const init = () => {

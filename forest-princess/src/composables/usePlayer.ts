@@ -7,7 +7,6 @@ import { type CommandState, safeRandomUUID } from "@aldegad/nuxt-core";
 export const usePlayer = () => {
   const state = reactive<Player>({
     id: safeRandomUUID(),
-    srcUrl: playerFront,
     src: null,
     x: 0,
     y: 0,

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { CanvasImg } from "@aldegad/nuxt-forest-princess/components";
-import { useCamera, usePlayer, useTrees } from "@aldegad/nuxt-forest-princess/composables";
+import { Inventory } from "@aldegad/nuxt-forest-princess/components";
+import { usePlayer, useTrees } from "@aldegad/nuxt-forest-princess/composables";
 import { commandMap } from "@aldegad/nuxt-forest-princess/schemas";
-import { useCanvas, useInventory, useLoots } from "@aldegad/nuxt-forest-princess/store";
+import { useCamera, useCanvas, useInventory, useLoots } from "@aldegad/nuxt-forest-princess/store";
 import { drawObjects } from "@aldegad/nuxt-forest-princess/utils";
 import { useCommand } from "@aldegad/nuxt-core";
 
@@ -15,6 +15,8 @@ const player = usePlayer();
 const trees = useTrees();
 const inventory = useInventory();
 const loots = useLoots();
+
+const rect = ref<{ src: CanvasImageSource | null; rect: DOMRect | null }>({ src: null, rect: null });
 
 canvas.watchUpdate(({ ctx, deltaTime }) => {
   ctx.save();
@@ -33,6 +35,18 @@ canvas.watchUpdate(({ ctx, deltaTime }) => {
   player.update({ command, deltaTime });
   const pickedupLoots = player.checkLootOverlap(loots);
   inventory.pickup(pickedupLoots);
+  /* const loot = Array.from(loots.state.values())[0];
+  rect.value = {
+    src: loot?.src || null,
+    rect: worldRectToWindowRect({
+      worldX: loot?.x || 0,
+      worldY: loot?.y || 0,
+      worldW: loot?.width || 0,
+      worldH: loot?.height || 0,
+      camera: camera.state.value,
+      canvasEl: ctx.canvas,
+    }),
+  }; */
 
   // 렌더
   camera.begin(ctx);
@@ -48,7 +62,6 @@ watch(
   canvasRef,
   (newCanvas) => {
     if (newCanvas) {
-      console.log("newCanvas", newCanvas);
       canvas.ref = newCanvas;
     }
   },
@@ -63,7 +76,7 @@ onMounted(() => {
     { x: 420, y: 360 },
   ]);
 
-  // 데모: 루팅 아이템 5개 사전 배치
+  // 데모: 루팅 아이템 사전 배치
   loots.set([
     { x: 180, y: 340 },
     { x: 360, y: 340 },
@@ -75,6 +88,16 @@ onMounted(() => {
     { x: 680, y: 480 },
     { x: 320, y: 120 },
     { x: 580, y: 240 },
+    { x: 120, y: 200 },
+    { x: 400, y: 300 },
+    { x: 600, y: 160 },
+    { x: 800, y: 440 },
+    { x: 240, y: 380 },
+    { x: 480, y: 520 },
+    { x: 720, y: 200 },
+    { x: 160, y: 460 },
+    { x: 540, y: 320 },
+    { x: 380, y: 140 },
   ]);
 });
 </script>
@@ -84,14 +107,17 @@ onMounted(() => {
     <canvas ref="canvasRef" class="h-full w-full" />
 
     <!-- 인벤토리 UI (DOM) -->
-    <div class="absolute bottom-20 left-1/2 flex -translate-x-1/2 gap-2 rounded-md bg-white/70 p-2 shadow">
-      <template v-for="slotNum in inventory.state.slots" :key="slotNum">
-        <div class="relative h-10 w-10 rounded border border-slate-300 bg-white">
-          <div v-if="inventory.state.items[slotNum - 1]" class="absolute inset-1 rounded bg-slate-400/80">
-            <CanvasImg :src="inventory.state.items[slotNum - 1]!.src" :width="32" :height="32" />
-          </div>
-        </div>
-      </template>
-    </div>
+    <Inventory />
+    <!-- <CanvasImg
+      :src="rect?.src || null"
+      :width="rect?.rect?.width || 0"
+      :height="rect?.rect?.height || 0"
+      class="fixed top-0 left-0 z-10 border border-red-500 bg-white"
+      :style="{
+        transform: `translate(${rect?.rect?.left || 0}px, ${rect?.rect?.top || 0}px)`,
+        width: (rect?.rect?.width || 0) + 'px',
+        height: (rect?.rect?.height || 0) + 'px',
+      }"
+    /> -->
   </div>
 </template>

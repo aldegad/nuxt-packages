@@ -1,24 +1,6 @@
-type FollowTarget = {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-};
+import type { Bounds, CameraState, FollowTarget } from "~/schemas";
 
-type CameraState = {
-  x: number; // world top-left
-  y: number; // world top-left
-  width: number; // viewport width
-  height: number; // viewport height
-  zoom: number;
-};
-
-type Bounds = {
-  width: number;
-  height: number;
-} | null;
-
-export const useCamera = () => {
+export const useCamera = defineStore("camera", () => {
   const state = ref<CameraState>({ x: 0, y: 0, width: 0, height: 0, zoom: 1 });
   const followTarget = ref<FollowTarget | Ref<FollowTarget> | null>(null);
   const isFollowEnabled = ref(true);
@@ -114,4 +96,6 @@ export const useCamera = () => {
     begin,
     end,
   };
-};
+});
+
+export type CameraInstance = ReturnType<typeof useCamera>;

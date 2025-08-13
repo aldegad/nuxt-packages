@@ -7,14 +7,18 @@ const props = defineProps<{
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 
-onMounted(() => {
-  if (canvasRef.value && props.src) {
-    const ctx = canvasRef.value.getContext("2d");
-    if (ctx) {
-      ctx.drawImage(props.src, 0, 0, props.width, props.height);
+watch(
+  [canvasRef, () => props.src, () => props.width, () => props.height],
+  ([newCanvas, newSrc, newWidth, newHeight]) => {
+    if (newCanvas && newSrc) {
+      const ctx = newCanvas.getContext("2d");
+      if (ctx) {
+        ctx.drawImage(newSrc, 0, 0, newWidth, newHeight);
+      }
     }
-  }
-});
+  },
+  { immediate: true },
+);
 </script>
 
 <template>

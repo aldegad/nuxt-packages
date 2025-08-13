@@ -20,7 +20,7 @@ export const useTrees = () => {
   };
 
   const add = ({ x, y, width = baseWidth, height = baseHeight }: AddTreeProps) => {
-    trees.push({ id: safeRandomUUID(), srcUrl: treeIdle, src: sprite.value, x, y, width, height });
+    trees.push({ id: safeRandomUUID(), src: sprite.value, x, y, width, height });
   };
 
   const set = (list: Array<AddTreeProps>) => {
@@ -28,7 +28,6 @@ export const useTrees = () => {
     trees.push(
       ...list.map(({ x, y, width = baseWidth, height = baseHeight }) => ({
         id: safeRandomUUID(),
-        srcUrl: treeIdle,
         src: sprite.value,
         x,
         y,
@@ -44,9 +43,7 @@ export const useTrees = () => {
 
   const render = ({ ctx, state }: RenderTreeProps) => {
     if (!sprite.value) return;
-    ctx.save();
     ctx.drawImage(sprite.value, state.x, state.y, state.width, state.height);
-    ctx.restore();
   };
 
   const init = () => {

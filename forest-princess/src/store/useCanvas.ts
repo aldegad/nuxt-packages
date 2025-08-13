@@ -24,8 +24,8 @@ export const useCanvas = defineStore("canvas", () => {
       newCanvas.width = newCanvas.clientWidth;
       newCanvas.height = newCanvas.clientHeight;
       ctx.value = newCanvas.getContext("2d");
-      ctx.value!.imageSmoothingEnabled = false;
-      ctx.value!.imageSmoothingQuality = "low";
+      ctx.value!.imageSmoothingEnabled = true;
+      ctx.value!.imageSmoothingQuality = "high";
       $animatedFrame = animatedFrame(draw);
       onCleanup(() => {
         $animatedFrame?.destroy();
