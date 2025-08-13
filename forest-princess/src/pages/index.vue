@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { CanvasImg } from "@aldegad/nuxt-forest-princess/components";
 import { useCamera, usePlayer, useTrees } from "@aldegad/nuxt-forest-princess/composables";
 import { commandMap } from "@aldegad/nuxt-forest-princess/schemas";
 import { useCanvas, useInventory, useLoots } from "@aldegad/nuxt-forest-princess/store";
@@ -80,14 +81,14 @@ onMounted(() => {
 
 <template>
   <div class="states-center relative flex h-screen justify-center">
-    <canvas ref="canvasRef" class="h-full w-full"></canvas>
+    <canvas ref="canvasRef" class="h-full w-full" />
 
     <!-- 인벤토리 UI (DOM) -->
     <div class="absolute bottom-20 left-1/2 flex -translate-x-1/2 gap-2 rounded-md bg-white/70 p-2 shadow">
       <template v-for="slotNum in inventory.state.slots" :key="slotNum">
         <div class="relative h-10 w-10 rounded border border-slate-300 bg-white">
           <div v-if="inventory.state.items[slotNum - 1]" class="absolute inset-1 rounded bg-slate-400/80">
-            <img :src="inventory.state.items[slotNum - 1]!.srcUrl" class="h-full w-full object-contain" />
+            <CanvasImg :src="inventory.state.items[slotNum - 1]!.src" :width="32" :height="32" />
           </div>
         </div>
       </template>
