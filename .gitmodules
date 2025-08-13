@@ -5,9 +5,7 @@
 [submodule "svg-mapper"]
 	path = svg-mapper
 	url = https://github.com/aldegad/nuxt-svg-mapper
-[submodule "nuxt-forest-princess"]
-	path = nuxt-forest-princess
-	url = https://github.com/aldegad/nuxt-forest-princess.git
+
 [submodule "forest-princess"]
 	path = forest-princess
 	url = https://github.com/aldegad/nuxt-forest-princess.git
