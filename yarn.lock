@@ -12,7 +12,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@aldegad/nuxt-core@npm:0.0.6, @aldegad/nuxt-core@workspace:core":
+"@aldegad/nuxt-core@npm:0.0.6":
+  version: 0.0.6
+  resolution: "@aldegad/nuxt-core@npm:0.0.6"
+  dependencies:
+    "@nuxt/eslint": "npm:1.5.2"
+    "@nuxt/test-utils": "npm:3.19.2"
+    "@pinia/nuxt": "npm:^0.11.1"
+    "@tailwindcss/vite": "npm:^4.1.11"
+    eslint: "npm:^9.0.0"
+    nuxt: "npm:^3.17.7"
+    overlayscrollbars: "npm:^2.11.4"
+    overlayscrollbars-vue: "npm:^0.5.9"
+    pinia: "npm:^3.0.3"
+    stats.js: "npm:^0.17.0"
+    tailwind-merge: "npm:^3.3.1"
+    tailwindcss: "npm:^4.1.11"
+    vue: "npm:^3.5.17"
+    vue-router: "npm:^4.5.1"
+  peerDependencies:
+    vue: ^3.0.0
+  checksum: 10c0/4de73e6625a0b73472e5f5fed71f1ca40597e6c04b136e7f80801fc5c1f666002c300483d473c4e7efacce84b9f3100e97fd618f81dfb5c1716e727ede351cb1
+  languageName: node
+  linkType: hard
+
+"@aldegad/nuxt-core@npm:0.0.7, @aldegad/nuxt-core@workspace:core":
   version: 0.0.0-use.local
   resolution: "@aldegad/nuxt-core@workspace:core"
   dependencies:
@@ -60,7 +84,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@aldegad/nuxt-forest-princess@workspace:forest-princess"
   dependencies:
-    "@aldegad/nuxt-core": "npm:0.0.6"
+    "@aldegad/nuxt-core": "npm:0.0.7"
     "@nuxt/eslint": "npm:^1.8.0"
     "@nuxt/test-utils": "npm:^3.19.2"
     "@pinia/nuxt": "npm:^0.11.2"
