@@ -29,7 +29,8 @@
     "generate:svg-mapper": "yarn workspace @aldegad/nuxt-svg-mapper generate",
     "electron:svg-mapper": "cross-env ELECTRON_TARGET=svg-mapper yarn workspace @aldegad/nuxt-electron-app dev",
     "electron-build:svg-mapper": "cross-env ELECTRON_TARGET=svg-mapper yarn workspace @aldegad/nuxt-electron-app build",
-    "dev:forest-princess": "yarn workspace @aldegad/nuxt-forest-princess dev"
+    "dev:forest-princess": "yarn workspace @aldegad/nuxt-forest-princess dev",
+    "deploy:forest-princess": "yarn workspace @aldegad/nuxt-forest-princess deploy"
   },
   "devDependencies": {
     "concurrently": "^9.2.0",

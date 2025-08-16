@@ -90,8 +90,10 @@ __metadata:
     "@pinia/nuxt": "npm:^0.11.2"
     "@tailwindcss/vite": "npm:^4.1.11"
     "@trivago/prettier-plugin-sort-imports": "npm:^5.2.2"
+    "@types/howler": "npm:^2"
     "@vue/eslint-config-prettier": "npm:^10.2.0"
     "@xenova/transformers": "npm:^2.17.2"
+    howler: "npm:^2.2.4"
     nuxt: "npm:^4.0.1"
     nuxt-workers: "npm:^0.1.0"
     pinia: "npm:^3.0.3"
@@ -4016,6 +4018,13 @@ __metadata:
   dependencies:
     "@types/node": "npm:*"
   checksum: 10c0/576d4e9d382393316ed815c593f7f5c157408ec5e184521d077fcb15d514b5a985245f153ef52142b9b976cb9bd8f801850d51238153ebd0dc9e96b7a7548588
+  languageName: node
+  linkType: hard
+
+"@types/howler@npm:^2":
+  version: 2.2.12
+  resolution: "@types/howler@npm:2.2.12"
+  checksum: 10c0/fb30e8c137ec03aa6a1e739be11b9d5b973f5f19d9f8a92eb11cff466170c9b5a314d73b8b34bb9a435e309ae880ba4847dee1029ec37d08c3f64b2219add462
   languageName: node
   linkType: hard
 
@@ -8994,6 +9003,13 @@ __metadata:
   dependencies:
     lru-cache: "npm:^10.0.1"
   checksum: 10c0/b19dbd92d3c0b4b0f1513cf79b0fc189f54d6af2129eeb201de2e9baaa711f1936929c848b866d9c8667a0f956f34bf4f07418c12be1ee9ca74fd9246335ca1f
+  languageName: node
+  linkType: hard
+
+"howler@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "howler@npm:2.2.4"
+  checksum: 10c0/74a295f56fd9b2abce122b27ed12c33fa195fb8a76832803e92d8e462a1eca803b55f44c14db052211d0cfab85c7c5249664c68d95bbbc16c775fac73866c6ef
   languageName: node
   linkType: hard
 
